@@ -6,8 +6,10 @@ public class CarStatus : MonoBehaviour {
     public float HEALTH = 100;
     public float CLEAN = 100;
     public float FUEL = 100;
-    public float[] TYRES = {100,100,100,100};
+
     public float DAMAGE = 5;
+    public float DIRTRATE = 10;
+    public float FUELRATE = 100;
 
     private float lastVelocity = 0;
 
@@ -22,26 +24,37 @@ public class CarStatus : MonoBehaviour {
         lastVelocity = gameObject.rigidbody2D.velocity.magnitude;
 
         // Cleanliness deteriorates over time   
-        CLEAN -= Time.deltaTime;
+        CLEAN -= Time.deltaTime / DIRTRATE;
 
         // Fuel goes down while accelerating
         float v = Input.GetAxis("Vertical");
-        FUEL -= v;
-
-        // Tyres wear while turning 
-        float turn = Input.GetAxis("Horizontal");
-        if (turn > 0) {
-            TYRES[0] -= turn;
-            TYRES[3] -= turn;
-        } else if (turn < 0) {
-            TYRES[1] -= turn;
-            TYRES[2] -= turn;
-        }
+        FUEL -= Mathf.Abs(v) / FUELRATE;
 	}
+
+    void OnGUI()
+    {
+		GUI.Box (new Rect (10,Screen.height - 60,100,50), "");
+        GUI.Label(new Rect(20, Screen.height - 60, 100, 50), "Health: " + (int)HEALTH + "%");
+        GUI.Label(new Rect(20, Screen.height - 50, 100, 50), "Fuel: " + (int)FUEL + "%");
+        GUI.Label(new Rect(20, Screen.height - 40, 100, 50), "Dirt: " + (100-(int)CLEAN) + "%");
+    }
 
     public void takeDamage()
     {
-        HEALTH -= (lastVelocity - gameObject.rigidbody2D.velocity.magnitude) * DAMAGE;
-        Debug.Log(HEALTH);
+        HEALTH = Mathf.Max(HEALTH - (lastVelocity - gameObject.rigidbody2D.velocity.magnitude) * DAMAGE, 0);
+
+        if (HEALTH == 0)
+        {
+            killCar();
+        }
+    }
+
+    public void killCar()
+    {
+        // DO FANCY EXPLOSION
+
+        Destroy(gameObject);
+
+        // GO TO GAMEOVER
     }
 }

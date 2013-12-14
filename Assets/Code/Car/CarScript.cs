@@ -15,10 +15,15 @@ public class CarScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        // Get status of car
+        CarStatus cs = (CarStatus)gameObject.GetComponent("CarStatus");
 
         // Move
         float v = Input.GetAxis("Vertical");
-        r.AddForce(transform.rotation * new Vector2(v * VELOCITY, 0) * Time.deltaTime);
+        if (cs.FUEL >= 1)
+        {
+            r.AddForce(transform.rotation * new Vector2(v * VELOCITY, 0) * Time.deltaTime);
+        }
 
         // Rotate
         float rot = Input.GetAxis("Horizontal");
