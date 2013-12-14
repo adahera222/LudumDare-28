@@ -24,11 +24,11 @@ public class CarStatus : MonoBehaviour {
         lastVelocity = gameObject.rigidbody2D.velocity.magnitude;
 
         // Cleanliness deteriorates over time   
-        CLEAN -= Time.deltaTime / DIRTRATE;
+        CLEAN = Mathf.Max(CLEAN - Time.deltaTime / DIRTRATE, 0);
 
         // Fuel goes down while accelerating
         float v = Input.GetAxis("Vertical");
-        FUEL -= Mathf.Abs(v) / FUELRATE;
+        FUEL = Mathf.Max(FUEL - Mathf.Abs(v) / FUELRATE, 0);
 	}
 
     void OnGUI()

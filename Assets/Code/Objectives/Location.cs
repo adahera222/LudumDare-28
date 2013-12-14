@@ -4,31 +4,42 @@ using System.Collections.Generic;
 
 public class Location : Objective {
 
-    private GameObject GOAL;
-    private Dictionary<int, Vector2> d = new Dictionary<int,Vector2>();
-    private string[] locationNames = { "Hospital", "Car Park" };
+    private Dictionary<int, Vector2> locations;
+    private List<string> locationNames;
     private string location;
     private Vector2 destination;
     private GameLogic gl;
     private GameObject g;
-    private System.Random r;
 
-    public Location(GameLogic gl, GameObject GOAL, System.Random r)
+    public Location(GameLogic gl, System.Random r)
     {
         this.gl = gl;
-        this.GOAL = GOAL;
 
-        d.Add(0, new Vector2(0, 4));
-        d.Add(1, new Vector2(3, 4));
+        this.locations = gl.getLocations();
+        this.locationNames = gl.getLocationNames();
 
-        this.r = r;
-
-        int i = Mathf.FloorToInt(r.Next(2));
-        destination = d[i];
+        int i = Mathf.FloorToInt(r.Next(locationNames.Count));
+        destination = locations[i];
         location = locationNames[i];
 
-        g = (GameObject)Object.Instantiate(GOAL);
-        g.transform.position = new Vector3(destination.x, destination.y, -2);
+        setDestination();
+    }
+
+    private void setDestination()
+    {
+        g = null;
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("Location");
+
+        foreach (GameObject go in objs)
+        {
+            if (go.transform.position == new Vector3(destination.x, destination.y, 1))
+            {
+                g = go;
+                break;
+            }
+        }
+        SpriteRenderer sr = (SpriteRenderer)g.GetComponent("SpriteRenderer");
+        sr.color = new Color(0, 1, 0);
     }
 	
 	// Update is called once per frame
@@ -38,7 +49,8 @@ public class Location : Objective {
         if (distanceToGoal.magnitude < 0.5f) 
         {
             gl.completeObjective();
-            Object.Destroy(g);
+            SpriteRenderer sr = (SpriteRenderer)g.GetComponent("SpriteRenderer");
+            sr.color = new Color(1, 1, 1);
         }
 	}
 

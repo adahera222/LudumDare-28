@@ -5,12 +5,10 @@ public class Hit : Objective {
     private int number;
     private GameLogic gl;
     private int n = 0;
-    private System.Random r;
 
     public Hit(GameLogic gl, System.Random r)
     {
         this.gl = gl;
-        this.r = r;
         number = r.Next(1, 5);
     }
 
