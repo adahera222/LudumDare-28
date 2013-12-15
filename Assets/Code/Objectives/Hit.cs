@@ -5,10 +5,21 @@ public class Hit : Objective {
     private int number;
     private GameLogic gl;
     private int n = 0;
+    private bool isHydrant;
 
     public Hit(GameLogic gl, System.Random r)
     {
         this.gl = gl;
+        int b = r.Next(2);
+        if (b < 1)
+        {
+            isHydrant = true;
+        }
+        else
+        {
+            isHydrant = false;
+        }
+
         number = r.Next(1, 5);
     }
 
@@ -25,11 +36,23 @@ public class Hit : Objective {
     override
     public string getDescription()
     {
-        return "Hit " + number + " fire hydrants!";
+        if (isHydrant)
+        {
+            return "Hit " + number + " fire hydrants!";
+        }
+        else
+        {
+            return "Hit " + number + " trash cans!";
+        }
+        
     }
 
-    public void OnHit()
+    public void OnHit(bool isHydrant)
     {
-        n++;
+        if (this.isHydrant == isHydrant)
+        {
+           n++;
+        }
+       
     }
 }

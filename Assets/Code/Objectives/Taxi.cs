@@ -57,9 +57,15 @@ public class Taxi : Objective {
             Vector2 distanceToGoal = gl.getPlayerPosition() - destination;
             if (distanceToGoal.magnitude < 0.5f)
             {
-                gl.completeObjective();
-                SpriteRenderer sr = (SpriteRenderer)g.GetComponent("SpriteRenderer");
-                sr.color = new Color(1, 1, 1);
+                if (!dudeCreated)
+                {
+                    dudeCreated = true;
+                    GameObject d = (GameObject)Object.Instantiate(DUDE);
+                    Dude script = (Dude)d.GetComponent("Dude");
+                    script.setGetOut(new Vector3(destination.x, destination.y - 0.5f, 0));
+                    script.setGameLogic(gl);
+                    d.transform.position = gl.getPlayerPosition();
+                }
             }
         }
         else
@@ -67,9 +73,9 @@ public class Taxi : Objective {
             Vector2 distanceToGoal = gl.getPlayerPosition() - destination;
             if (distanceToGoal.magnitude < 0.5f)
             {
-                if (cs.CLEAN < 25)
+                if (cs.CLEAN < 50)
                 {
-                    Debug.Log("Your car is too dirty for the VIP!");
+                    gl.addToQueue("Car too dirty!");
                 }
                 else if (!dudeCreated)
                 {
@@ -92,8 +98,17 @@ public class Taxi : Objective {
         sr.color = new Color(1, 1, 1);
         dudeCreated = false;
         collectVIP();
-        Debug.Log(getDescription());
+        gl.displayObjective(getDescription());
     }
+
+    public void OnGetOut()
+    {
+        gl.completeObjective();
+        dudeCreated = false;
+        SpriteRenderer sr = (SpriteRenderer)g.GetComponent("SpriteRenderer");
+        sr.color = new Color(1, 1, 1);
+    }
+
 
     private void collectVIP()
     {

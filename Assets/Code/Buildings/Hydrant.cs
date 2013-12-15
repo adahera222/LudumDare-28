@@ -3,12 +3,13 @@ using System.Collections;
 
 public class Hydrant : MonoBehaviour {
 
-    public ParticleSystem WATER;
+    public ParticleSystem p;
     public GameObject GAMELOGIC;
+    public bool isHydrant;
 
 	// Use this for initialization
 	void Start () {
-        WATER.Stop();
+        p.Stop();
 	}
 	
 	// Update is called once per frame
@@ -18,15 +19,21 @@ public class Hydrant : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == "Player" && WATER.isStopped)
+        if (coll.gameObject.tag == "Player" && p.isStopped)
         {
-            WATER.Play();
+            p.Play();
+            if (!isHydrant)
+            {
+                CarStatus cs = (CarStatus)coll.GetComponent("CarStatus");
+                cs.CLEAN -= 20;
+            }
+
             GameLogic gl = (GameLogic)GAMELOGIC.GetComponent("GameLogic");
             Objective o = gl.getCurrentObjective();
             if (o is Hit)
             {
                 Hit h = (Hit)o;
-                h.OnHit();
+                h.OnHit(isHydrant);
             }
         }
     }

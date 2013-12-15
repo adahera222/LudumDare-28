@@ -57,6 +57,6 @@ public class Location : Objective {
     override
     public string getDescription()
     {
-        return "Get to the " + location + " at " + destination.ToString();;
+        return "Get to the " + location + "!";
     }
 }

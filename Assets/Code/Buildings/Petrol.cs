@@ -3,9 +3,12 @@ using System.Collections;
 
 public class Petrol : MonoBehaviour {
 
+    private GameLogic GAMELOGIC;
+
 	// Use this for initialization
 	void Start () {
-	
+        GameObject gl = GameObject.FindGameObjectWithTag("GameLogic");
+        GAMELOGIC = (GameLogic)gl.GetComponent("GameLogic");
 	}
 	
 	// Update is called once per frame
@@ -19,7 +22,7 @@ public class Petrol : MonoBehaviour {
         {
             CarStatus cs = (CarStatus)coll.gameObject.GetComponent("CarStatus");
             cs.FUEL = 100;
-            Debug.Log("Fuel refilled! " + cs.FUEL);
+            GAMELOGIC.addToQueue("Fuel refilled!");
         }
     }
 }

@@ -7,37 +7,52 @@ public class CarStatus : MonoBehaviour {
     public float CLEAN = 100;
     public float FUEL = 100;
 
+    public GUIText h;
+    public GUIText f;
+    public GUIText d;
+
+    public ParticleSystem explosion;
+    public GameLogic gl;
+
     public float DAMAGE = 5;
     public float DIRTRATE = 10;
     public float FUELRATE = 100;
 
     private float lastVelocity = 0;
+    private bool gameOver = false;
 
 	// Use this for initialization
 	void Start () {
-	    
+        explosion.Stop();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        // Update speed for collisions
-        lastVelocity = gameObject.rigidbody2D.velocity.magnitude;
+        if (!gameOver) {
+            // Update speed for collisions
+            lastVelocity = gameObject.rigidbody2D.velocity.magnitude;
 
-        // Cleanliness deteriorates over time   
-        CLEAN = Mathf.Max(CLEAN - Time.deltaTime / DIRTRATE, 0);
+            // Cleanliness deteriorates over time   
+            CLEAN = Mathf.Max(CLEAN - Time.deltaTime / DIRTRATE, 0);
 
-        // Fuel goes down while accelerating
-        float v = Input.GetAxis("Vertical");
-        FUEL = Mathf.Max(FUEL - Mathf.Abs(v) / FUELRATE, 0);
+            // Fuel goes down while accelerating
+            float v = Input.GetAxis("Vertical");
+            FUEL = Mathf.Max(FUEL - Mathf.Abs(v) / FUELRATE, 0);
+            if (FUEL < 1)
+            {
+                gl.GameOver("You ran out of fuel.");
+            }
+
+            h.text = "Health: " + (int)HEALTH + "%";
+            f.text = "Fuel: " + (int)FUEL + "%";
+            d.text = "Dirt: " + (100-(int)CLEAN) + "%";
+        } else if (explosion.isStopped) {
+            renderer.enabled = false;
+            gl.GameOver("Your car exploded, you might have noticed."); ;
+        }
+
+        
 	}
-
-    void OnGUI()
-    {
-		GUI.Box (new Rect (10,Screen.height - 60,100,50), "");
-        GUI.Label(new Rect(20, Screen.height - 60, 100, 50), "Health: " + (int)HEALTH + "%");
-        GUI.Label(new Rect(20, Screen.height - 50, 100, 50), "Fuel: " + (int)FUEL + "%");
-        GUI.Label(new Rect(20, Screen.height - 40, 100, 50), "Dirt: " + (100-(int)CLEAN) + "%");
-    }
 
     public void takeDamage()
     {
@@ -51,10 +66,8 @@ public class CarStatus : MonoBehaviour {
 
     public void killCar()
     {
-        // DO FANCY EXPLOSION
-
-        Destroy(gameObject);
-
-        // GO TO GAMEOVER
+        rigidbody2D.isKinematic = true;
+        explosion.Play();
+        gameOver = true;
     }
 }

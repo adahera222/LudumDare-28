@@ -7,6 +7,7 @@ public class CarScript : MonoBehaviour {
     public ParticleSystem SMOKE;
 
     private Rigidbody2D r;
+    private bool gameOver;
 
 	// Use this for initialization
 	void Start () {
@@ -24,6 +25,11 @@ public class CarScript : MonoBehaviour {
         float cr = right.x * current.x + right.y * current.y;
 
         r.AddForce(-cr * right);
+
+        if (gameOver)
+        {
+            return;
+        }
  
         // Move
         float v = Input.GetAxis("Vertical");
@@ -56,4 +62,10 @@ public class CarScript : MonoBehaviour {
         }
 
 	}
+
+    public void GameOver()
+    {
+        gameOver = true;
+        SMOKE.enableEmission = false;
+    }
 }
