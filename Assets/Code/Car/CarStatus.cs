@@ -67,6 +67,7 @@ public class CarStatus : MonoBehaviour {
     public void killCar()
     {
         rigidbody2D.isKinematic = true;
+        AudioHelper.Instance.MakeExplosionSound();
         explosion.Play();
         gameOver = true;
     }

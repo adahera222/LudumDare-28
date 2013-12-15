@@ -19,6 +19,7 @@ public class Collisions : MonoBehaviour {
         {
             CarStatus cs = (CarStatus)coll.gameObject.GetComponent("CarStatus");
             cs.takeDamage();
+            AudioHelper.Instance.MakeCrashSound();
         }
     }
 }

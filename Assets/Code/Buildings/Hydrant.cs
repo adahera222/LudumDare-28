@@ -6,6 +6,7 @@ public class Hydrant : MonoBehaviour {
     public ParticleSystem p;
     public GameObject GAMELOGIC;
     public bool isHydrant;
+    private float count = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -21,6 +22,7 @@ public class Hydrant : MonoBehaviour {
     {
         if (coll.gameObject.tag == "Player" && p.isStopped)
         {
+            AudioHelper.Instance.MakeHydrantSound();
             p.Play();
             if (!isHydrant)
             {

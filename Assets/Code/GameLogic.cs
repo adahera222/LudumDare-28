@@ -26,7 +26,7 @@ public class GameLogic : MonoBehaviour {
     private float timer = 60;
     private bool gameOver = false;
 
-    private int score = 0;
+    public int score = 0;
     private int timeBonus = 30;
 
     private List<GameObject> doges = new List<GameObject>();
@@ -130,6 +130,7 @@ public class GameLogic : MonoBehaviour {
         addToQueue("Objective Complete!");
         score++;
         timeBonus = Mathf.Max(timeBonus-1, 20);
+        AudioHelper.Instance.MakeObjectiveSound();
     }
 
     public Vector2 getPlayerPosition()
@@ -211,10 +212,10 @@ public class GameLogic : MonoBehaviour {
             else
             {
                 SCORE.text = "" + score + " objectives? SUCH OBJECTIVE, SO WOW!";
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 50; i++)
                 {
                     GameObject go = (GameObject)Instantiate(DOGE);
-                    go.transform.position = new Vector3(r.Next(-5, 5), r.Next(-5, 5), 0);
+                    go.transform.position = new Vector3(r.Next(-10, 10), r.Next(-10, 10), 0);
                     go.transform.Rotate(new Vector3(0,0,r.Next(360)));
                     doges.Add(go);
                 }
