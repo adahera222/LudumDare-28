@@ -17,6 +17,8 @@ public class AudioHelper : MonoBehaviour {
     public AudioClip Screech2;
     public AudioClip Screech3;
 
+    public AudioClip MoneyShot;
+
     private float coolDown = 0;
     private float screechCoolDown = 0;
 
@@ -94,7 +96,7 @@ public class AudioHelper : MonoBehaviour {
 
     }
     
-    internal void MakeHydrantSound()
+    public void MakeHydrantSound()
     {
         MakeSound(Hydrant);
     }
@@ -108,4 +110,10 @@ public class AudioHelper : MonoBehaviour {
     {
         MakeSound(Explosion);
     }
+
+    public void MakeMoneySound()
+    {
+        MakeSound(MoneyShot);
+    }
+
 }

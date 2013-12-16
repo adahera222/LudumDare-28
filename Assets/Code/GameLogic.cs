@@ -38,7 +38,8 @@ public class GameLogic : MonoBehaviour {
 
         generateLocations();
 
-        float rand = r.Next(3);
+        float rand = r.Next(0,4);
+
         if (rand < 1)
         {
             currentObjective = new Location(this, r);
@@ -51,6 +52,11 @@ public class GameLogic : MonoBehaviour {
         {
             CarStatus cs = (CarStatus)PLAYER.GetComponent("CarStatus");
             currentObjective = new Taxi(this, r, cs, DUDE);
+
+        }
+        else if (rand < 4)
+        {
+            currentObjective = new Bank(this);
 
         }
         displayObjective(currentObjective.getDescription());
@@ -207,7 +213,7 @@ public class GameLogic : MonoBehaviour {
             }
             else if (score < 20)
             {
-                SCORE.text = "Regardless, completing " + score + " objectives is a impressive!";
+                SCORE.text = "Regardless, completing " + score + " objectives is impressive!";
             }
             else
             {

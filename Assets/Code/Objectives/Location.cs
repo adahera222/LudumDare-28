@@ -39,7 +39,7 @@ public class Location : Objective {
             }
         }
         SpriteRenderer sr = (SpriteRenderer)g.GetComponent("SpriteRenderer");
-        sr.color = new Color(0, 1, 0);
+        sr.color = new Color(30f/255f, 144f/255f, 255f/255f);
     }
 	
 	// Update is called once per frame

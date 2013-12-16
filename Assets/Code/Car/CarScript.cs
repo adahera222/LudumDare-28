@@ -76,8 +76,7 @@ public class CarScript : MonoBehaviour {
         if (r.velocity.magnitude > 0)
         {
             float ang = Vector2.Angle(r.velocity, transform.rotation * new Vector2(1, 0));
-            Debug.Log(ang);
-            if (ang > 67.5 && ang < 112.5)
+            if (ang > 67.5 && ang < 112.5 && r.velocity.magnitude > 1)
             {
                 AudioHelper.Instance.MakeScreechSound();
             }
